@@ -43,16 +43,18 @@
 (defonce raw-data (r/atom nil))
 (defonce calculating? (r/atom false))
 (defn num-input
-  [key]
-  [:div
-   [:label (str (name key) "  ")
-    [:input {:type "number"
-             :id key
-             :default-value (@state key)
-             :on-change (fn [ev] (swap! state
-                                       assoc
-                                       key
-                                       (-> ev .-target .-value js/Number)))}]]])
+  ([key] (num-input key nil))
+  ([key comment]
+   [:div
+    [:label (str (name key) "  ")
+     [:small comment]
+     [:input {:type "number"
+              :id key
+              :default-value (@state key)
+              :on-change (fn [ev] (swap! state
+                                        assoc
+                                        key
+                                        (-> ev .-target .-value js/Number)))}]]]))
 
 (comment (run-simulation))
 
@@ -121,12 +123,12 @@
   [:div
    [:h1 "Insure0x Calculator"]
    (num-input :total-beneficiaries)
-   (num-input :fee)
-   (num-input :estimated-risk)
-   (num-input :min-amount)
-   (num-input :max-amount)
-   (num-input :total-months)
-   (num-input :total-simulations)
+   (num-input :fee "(per month but paid yearly)")
+   (num-input :estimated-risk "(probability -from 0 to 1- that the insureance will be required)")
+   (num-input :min-amount "(coverage range)")
+   (num-input :max-amount "(coverage range)")
+   (num-input :total-months "(to run simulation)")
+   (num-input :total-simulations "(more simulations give more precise estimates but are slower to run)")
    [:button {:on-click run-simulation} "Run Simulation"]
    (if @calculating?
      [:div "Running simulation..."]
