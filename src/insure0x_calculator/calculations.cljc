@@ -74,7 +74,7 @@
                        (= 0 reserve) {:reserve reserve
                                       :unserved (inc unserved)
                                       :beneficiaries (conj beneficiaries benef)
-                                      :served served
+                                      :served (conj served :unserved)
                                       :partial-cash-unserved partial-cash-unserved}
                        (and (> reserve 0) needed?)
                        (let [required-amount (rand-range min-amount maximum-amount)
@@ -83,7 +83,7 @@
                          {:reserve (- reserve amount)
                           :unserved unserved
                           :beneficiaries (conj beneficiaries (update-expenses benef amount))
-                          :served (conj served (if (> unserved-cash 0) :partial :total))
+                          :served (conj served (if (> unserved-cash 0) :partial :full))
                           :partial-cash-unserved (if (> unserved-cash 0)
                                                    (conj partial-cash-unserved unserved-cash)
                                                    partial-cash-unserved)}))))
@@ -120,4 +120,4 @@
       min*)))
 
 (defn run-months [fund config quantity]
-    (reduce (fn [fund* month] (run-month fund* config month)) fund (range quantity)))
+  (reduce (fn [fund* month] (run-month fund* config month)) fund (range quantity)))
