@@ -142,7 +142,7 @@
     [:p "If the funds almost out and there is an accident, the beneficiary will not be able to receive any refund. This graph represents the probability of such an event happening."]
     [:h3 "4. Fully served vs partially served vs unserved beneficiaries"]
     [:p "This graph shows the percentages of beneficiaries in each of the categories after the simulations"]]
-   [:section
+   [:section {:style {:marginBottom "120px"}}
     [:h2 "Calculator"]
     (num-input :total-beneficiaries)
     (num-input :fee "(per month but paid yearly)")
