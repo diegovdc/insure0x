@@ -37,7 +37,7 @@
                         :estimated-risk 0.02
                         :min-amount 3000
                         :max-amount 5000
-                        :total-months 12
+                        :total-months 48
                         :total-simulations 50}))
 (defonce result-data (r/atom nil))
 (defonce raw-data (r/atom nil))
@@ -68,7 +68,8 @@
   (reset! calculating? true)
   (a/go
     (let [{:keys [total-beneficiaries fee estimated-risk
-                  min-amount max-amount total-simulations]} @state
+                  min-amount max-amount total-simulations
+                  total-months]} @state
           data (mapv (fn [_]
                        (let [config {:min-amount min-amount :growth-rate 0}
                              fund {:reserve 0
@@ -78,7 +79,7 @@
                                    :beneficiaries (calc/init-beneficiaries
                                                    total-beneficiaries fee estimated-risk)
                                    :unserved 0}]
-                         (calc/run-months fund config 48)))
+                         (calc/run-months fund config total-months)))
                      (range total-simulations))]
       (reset! raw-data data)
       (reset! result-data
